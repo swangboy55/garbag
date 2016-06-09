@@ -6,6 +6,7 @@ public class RunnerMain
 	private Window window;
 	private KeyInput keyInput;
 	private MapControl mapCtl;
+	private BackgroundManager bm;
 	
 	public static void main(String[] args)
 	{
@@ -37,6 +38,8 @@ public class RunnerMain
 		mapCtl = new MapControl(objectList, camera);
 		mapCtl.initMap();
 		window.setVisible(true);
+		bm = new BackgroundManager(mapCtl.getRunner(), camera, "res/bg1.png", "res/bg2.png");
+		
 		mainLoop();
 	}
 	
@@ -51,15 +54,18 @@ public class RunnerMain
 			objectList.tickAll(tickTime);
 			camera.inheritObjectXMove();
 			mapCtl.manageMap();
+			bm.moveBackgrounds();
+			
 			window.clear();
 			
+			bm.renderBackgrounds(window);
 			
 			objectList.renderAll(window, camera);
 			
 			window.swap();
 			try
 			{
-				Thread.sleep(16);
+				Thread.sleep(1);
 			} 
 			catch(InterruptedException e) 
 			{

@@ -16,12 +16,17 @@ public class MapControl
 		obstacleSpacing = 600;
 	}
 	
+	public Runner getRunner()
+	{
+		return runner;
+	}
+	
 	public void initMap()
 	{
 		objList.clearMap();
 		obstacleSpacing = 600;
-		ground1 = new GameObject(800, 50, ID.GROUND, "D:/JPEG/maxresdefault.jpg");
-		ground2 = new GameObject(800, 50, ID.GROUND, "D:/JPEG/maxresdefault.jpg");
+		ground1 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg");
+		ground2 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg");
 		Animation runnerAnim = new Animation(75);
 		runnerAnim.addClip("res/6eMtaHG.png");//changeme
 		runner = new Runner(50, 70, ID.RUNNER, runnerAnim);
