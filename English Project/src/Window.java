@@ -66,16 +66,14 @@ public class Window extends Canvas
 	
 	public void clear()
 	{
-		g.setColor(Color.black);
+		bufferGraphics.setColor(Color.black);
 		int w = getWidth(), h = getHeight();
-		g.fillRect(0, 0, w, h);
+		bufferGraphics.fillRect(0, 0, w, h);
 	}
 	
 	public void swap()
 	{
-		
 		g.drawImage(frameBuffer, 0, 0, frameBuffer.getWidth(), frameBuffer.getHeight(), null);
-		
 		strat.show();
 	}
 

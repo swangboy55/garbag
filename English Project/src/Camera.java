@@ -1,15 +1,23 @@
 
-public class Camera {
+public class Camera 
+{
 	
 	private double x;
 	private double y;
 	private int w;
 	private int h;
+	private GameObject followObj;
 	
 	public Camera(int w, int h)
 	{
 		this.w = w;
 		this.h = h;
+		followObj = null;
+	}
+	
+	public void setFollowObj(GameObject obj)
+	{
+		followObj = obj;
 	}
 	
 	public boolean shouldRender(double x, double y, double w, double h)
@@ -39,6 +47,15 @@ public class Camera {
 		if(this.y + h >= mapHeight)
 			this.y = mapHeight - h;
 		
+	}
+	
+	public void inheritObjectVelocity()
+	{
+		if(followObj != null)
+		{
+			x += followObj.getxV();
+			y += followObj.getyV();
+		}
 	}
 	
 	public double translateX(double x)

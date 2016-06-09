@@ -21,12 +21,9 @@ public class RunnerMain
 		keyInput = new KeyInput(objectList);
 		window = new Window(800, 400, keyInput);
 		Runner hester = new Runner(50, 70, ID.RUNNER, hesterAnimation);
-		GameObject something = new GameObject(100, 300, ID.OBSTACLE, "res/6eMtaHG.png");
-		objectList.addObject(something);
-		something.setX(100);
 		hester.setX(0);
 		hester.setY(0);
-		hester.setxV(50);
+		hester.setxV(400);
 		objectList.addObject(hester);
 		window.setVisible(true);
 		mainLoop();
@@ -41,6 +38,7 @@ public class RunnerMain
 			tickTime = (double)(System.currentTimeMillis() - lastTick) / 1000.0;
 			lastTick = System.currentTimeMillis();
 			objectList.tickAll(tickTime);
+			camera.inheritObjectVelocity();
 			window.clear();
 			
 			objectList.renderAll(window, camera);
