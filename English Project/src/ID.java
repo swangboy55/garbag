@@ -3,5 +3,6 @@ public enum ID
 {
 	
 	RUNNER(),
-	OBSTACLE()
+	OBSTACLE(),
+	GROUND()
 }

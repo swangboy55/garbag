@@ -6,7 +6,7 @@ public class Camera
 	private double y;
 	private int w;
 	private int h;
-	private GameObject followObj;
+	private Runner followObj;
 	
 	public Camera(int w, int h)
 	{
@@ -15,7 +15,7 @@ public class Camera
 		followObj = null;
 	}
 	
-	public void setFollowObj(GameObject obj)
+	public void setFollowObj(Runner obj)
 	{
 		followObj = obj;
 	}
@@ -49,12 +49,11 @@ public class Camera
 		
 	}
 	
-	public void inheritObjectVelocity()
+	public void inheritObjectXMove()
 	{
 		if(followObj != null)
 		{
-			x += followObj.getxV();
-			y += followObj.getyV();
+			x += followObj.getX() - followObj.getPrevX();
 		}
 	}
 	
@@ -68,5 +67,23 @@ public class Camera
 		return y - this.y;
 	}
 
-//	public void 
+	public double getX()
+	{
+		return x;
+	}
+	
+	public double getY()
+	{
+		return y;
+	}
+	
+	public double getW()
+	{
+		return (double)w;
+	}
+	
+	public double getH()
+	{
+		return (double)h;
+	}
 }

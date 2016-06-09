@@ -5,6 +5,7 @@ public class RunnerMain
 	private Camera camera;
 	private Window window;
 	private KeyInput keyInput;
+	private MapControl mapCtl;
 	
 	public static void main(String[] args)
 	{
@@ -15,16 +16,26 @@ public class RunnerMain
 	{
 		running = true;
 		objectList = new GameObjectList();
-		Animation hesterAnimation = new Animation(60);
+//		Animation hesterAnimation = new Animation(60);
 		camera = new Camera(800, 400);
-		hesterAnimation.addClip("res/6eMtaHG.png");
+//		hesterAnimation.addClip("res/6eMtaHG.png");
 		keyInput = new KeyInput(objectList);
 		window = new Window(800, 400, keyInput);
-		Runner hester = new Runner(50, 70, ID.RUNNER, hesterAnimation);
-		hester.setX(0);
-		hester.setY(0);
-		hester.setxV(400);
-		objectList.addObject(hester);
+//		runner = new Runner(50, 70, ID.RUNNER, hesterAnimation);
+//		GameObject ground = new GameObject(800, 50, ID.GROUND, "D:\\JPEG\\maxresdefault.jpg");
+//		ground.setY(350);
+//		
+//		objectList.addObject(ground);
+//		
+//		
+//		
+//		runner.setX(50);
+//		runner.setY(280);
+//		runner.setxV(400);
+//		camera.setFollowObj(runner);
+//		objectList.addObject(runner);
+		mapCtl = new MapControl(objectList, camera);
+		mapCtl.initMap();
 		window.setVisible(true);
 		mainLoop();
 	}
@@ -38,8 +49,10 @@ public class RunnerMain
 			tickTime = (double)(System.currentTimeMillis() - lastTick) / 1000.0;
 			lastTick = System.currentTimeMillis();
 			objectList.tickAll(tickTime);
-			camera.inheritObjectVelocity();
+			camera.inheritObjectXMove();
+			mapCtl.manageMap();
 			window.clear();
+			
 			
 			objectList.renderAll(window, camera);
 			

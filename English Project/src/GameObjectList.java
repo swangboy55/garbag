@@ -8,6 +8,11 @@ public class GameObjectList {
 	{
 	}
 	
+	public void clearMap()
+	{
+		list.clear();
+	}
+	
 	public int addObject(GameObject g)
 	{
 		list.add(g);
@@ -43,6 +48,18 @@ public class GameObjectList {
 		{
 			go.render(wind, cam);
 		}
+	}
+	
+	public GameObject getGround()
+	{
+		for(GameObject go : list)
+		{
+			if(go.getID() == ID.GROUND)
+			{
+				return go;
+			}
+		}
+		return null;
 	}
 	
 	public void tickAll(double deltaTime)
