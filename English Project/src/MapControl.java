@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class MapControl
 {
@@ -8,12 +9,22 @@ public class MapControl
 	private GameObject ground2;
 	private GameObject frontGround;
 	private Runner runner;
+	private ArrayList<GameObject> obstacleList;
+	
+	private static Animation testObstacle;
+	
+	static
+	{
+		testObstacle = new Animation(Integer.MAX_VALUE);
+		testObstacle.addClip("res/6eMtaHG.png");
+	}
 	
 	public MapControl(GameObjectList list, Camera camera)
 	{
 		objList = list;
 		this.camera = camera;
 		obstacleSpacing = 600;
+		obstacleList = new ArrayList<GameObject>();
 	}
 	
 	public Runner getRunner()
@@ -39,7 +50,7 @@ public class MapControl
 		
 		runner.setY(280);
 		runner.setX(50);
-		runner.setxV(400);
+		runner.setxV(800);
 
 		objList.addObject(ground1);
 		objList.addObject(ground2);
@@ -49,7 +60,33 @@ public class MapControl
 	
 	public void manageMap()
 	{
-//		if((camera.getX() + camera.getW()))
+		if(obstacleList.size() == 0)
+		{
+			GameObject newObstacle = new GameObject(80, 80, ID.OBSTACLE, testObstacle);
+			newObstacle.setX(camera.getX() + camera.getW());
+			newObstacle.setY(ground1.getY() - 80);
+			objList.addObject(newObstacle);
+			obstacleList.add(newObstacle);
+		}
+		else if((camera.getX() + camera.getW() -
+				obstacleList.get(obstacleList.size() - 1).getX()) >= obstacleSpacing)
+		{
+			GameObject newObstacle = new GameObject(80, 80, ID.OBSTACLE, testObstacle);
+			newObstacle.setX(camera.getX() + camera.getW());
+			newObstacle.setY(ground1.getY() - 80);
+			objList.addObject(newObstacle);
+			obstacleList.add(newObstacle);
+		}
+		
+		for(int a=0;a<obstacleList.size();a++)
+		{
+			if(obstacleList.get(a).getX() + obstacleList.get(a).getW() < camera.getX())
+			{
+				objList.removeObject(obstacleList.get(a));
+				obstacleList.remove(a);
+				a--;
+			}
+		}
 		if(camera.getX() + camera.getW() > frontGround.getX() + frontGround.getW())
 		{
 			if(frontGround == ground1)

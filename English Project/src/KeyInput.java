@@ -16,8 +16,8 @@ public class KeyInput extends KeyAdapter{
 //			player.setxV(250);
 //		if (key == KeyEvent.VK_A)
 //			player.setxV(-250);
-//		if (key == KeyEvent.VK_SPACE && player.canJump())
-//			player.jump();
+		if (key == KeyEvent.VK_SPACE)
+			player.jump();
 	}
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();

@@ -22,6 +22,17 @@ public class GameObjectList {
 	{
 		list.remove(index);
 	}
+	
+	public ArrayList<GameObject> getList()
+	{
+		return list;
+	}
+	
+	public GameObject get(int index)
+	{
+		return list.get(index);
+	}
+	
 	public void removeObject(GameObject g)
 	{
 		for(int i = 0; i < list.size(); i++){
