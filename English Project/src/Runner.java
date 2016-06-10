@@ -2,15 +2,22 @@ public class Runner extends GameObject
 {
 
 	public static final double GRAV = 7400;
-	
-	private double prevX;
-	private double prevY;
 	private double prevYv;
 	private boolean jumping;
+	private double xAccel;
+	private Animation fallingAnim;
+	private Animation runningAnim;
 	
-	public Runner(double w, double h, ID id, Animation animation)
+	public Runner(double w, double h, ID id, Animation running, Animation falling)
 	{
-		super(w, h, id, animation);
+		super(w, h, id, running);
+		fallingAnim = falling;
+		runningAnim = running;
+	}
+	
+	public void setxAccel(double accel)
+	{
+		xAccel = accel;
 	}
 	
 	@Override
@@ -20,13 +27,13 @@ public class Runner extends GameObject
 		{
 			jumping = true;
 		}
-		prevX = x;
-		prevY = y;
 		prevYv = yV;
 		super.tick(deltaTime);
 		yV += GRAV * deltaTime;
-		
+		xV += xAccel * deltaTime;
 	}
+	
+	
 	
 	public void changeAnimation(Animation animation)
 	{
@@ -41,6 +48,20 @@ public class Runner extends GameObject
 	public double getPrevY()
 	{
 		return prevY;
+	}
+	
+	@Override
+	public void render(Window wind, Camera cam)
+	{
+		if(prevY != y)
+		{
+			sprite = fallingAnim;
+		}
+		else
+		{
+			sprite = runningAnim;
+		}
+		super.render(wind, cam);
 	}
 	
 	@Override
@@ -70,5 +91,4 @@ public class Runner extends GameObject
 	{
 		return jumping;
 	}
-	
 }

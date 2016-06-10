@@ -51,8 +51,9 @@ public class RunnerMain
 		{
 			tickTime = (double)(System.currentTimeMillis() - lastTick) / 1000.0;
 			lastTick = System.currentTimeMillis();
-			objectList.tickAll(tickTime);
 			camera.inheritObjectXMove();
+			camera.tickCamera(tickTime);
+			objectList.tickAll(tickTime);
 			mapCtl.manageMap();
 			bm.moveBackgrounds();
 			

@@ -2,20 +2,21 @@ import java.awt.Graphics;
 
 
 
-public class GameObject {
-
+public class GameObject 
+{
+	protected double prevX, prevY;
 	protected double x, y;
 	protected double xV, yV;
 	protected double h, w;
 	protected ID id;
 	protected Animation sprite;
-	
+
 	public GameObject(double w, double h, ID id, String image)
 	{
 		this(w, h, id, new Animation(Integer.MAX_VALUE));
 		sprite.addClip(image);
 	}
-	
+
 	public GameObject(double w, double h, ID id, Animation anim)
 	{
 		this.w = w;
@@ -23,7 +24,7 @@ public class GameObject {
 		this.id = id;
 		sprite = anim;
 	}
-	
+
 	public void render(Window wind, Camera cam)
 	{
 		if(sprite == null)
@@ -37,6 +38,8 @@ public class GameObject {
 	}
 	public void tick(double deltaTime)
 	{
+		prevX = x;
+		prevY = y;
 		sprite.nextFrame();
 		x += xV * deltaTime;
 		y += yV * deltaTime;
@@ -51,20 +54,20 @@ public class GameObject {
 			return false;
 		}
 		return true;
-		
+
 	}
-	
+
 	public void correctPositionX(double correction)
 	{
 		x += correction;
 	}
-	
+
 	public void correctPositionY(double correction)
 	{
 		y += correction;
 		yV = 0;
 	}
-	
+
 	public double getPenetrationDepthX(GameObject other)
 	{
 		//if entire box is within
@@ -82,7 +85,7 @@ public class GameObject {
 			{
 				double left = -(x + w - other.x);
 				double right = other.x + other.w - x;
-				
+
 				if(Math.abs(left) < Math.abs(right))
 					return left;
 				return right;
@@ -98,7 +101,7 @@ public class GameObject {
 		}
 		return 0;
 	}
-	
+
 	public double getPenetrationDepthY(GameObject other)
 	{
 		if(y >= other.y && y + h <= other.y + other.h)
@@ -117,7 +120,7 @@ public class GameObject {
 				double bot = other.y + other.h - y;
 				if(Math.abs(top) < Math.abs(bot))
 					return top;
-				
+
 				return bot;
 			}
 		}
@@ -131,8 +134,8 @@ public class GameObject {
 		}
 		return 0;
 	}
-	
-	
+
+
 	public ID getID() {
 		return id;
 	}

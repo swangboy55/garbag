@@ -8,8 +8,8 @@ public class BackgroundManager
 {
 	private Camera camera;
 	private Runner runner;
-	public static double BG1SLOW = 0.4;
-	public static double BG2SLOW = 0.2;
+	public static double BG1SLOW = 0.2;
+	public static double BG2SLOW = 0.4;
 	private BufferedImage bg1, bg2;
 	
 	private double bgx1;

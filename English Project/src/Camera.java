@@ -1,7 +1,8 @@
 
 public class Camera 
 {
-	
+	private double xV;
+	private double yV;
 	private double x;
 	private double y;
 	private int w;
@@ -49,11 +50,17 @@ public class Camera
 		
 	}
 	
+	public void tickCamera(double deltaTime)
+	{
+		x += xV * deltaTime;
+	}
+	
 	public void inheritObjectXMove()
 	{
 		if(followObj != null)
 		{
-			x += followObj.getX() - followObj.getPrevX();
+//			x += followObj.getX() - followObj.getPrevX();
+			xV = followObj.getxV();
 		}
 	}
 	
