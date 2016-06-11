@@ -6,47 +6,62 @@ public class RunnerMain
 	private Window window;
 	private KeyInput keyInput;
 	private MapControl mapCtl;
-	private BackgroundManager bm;
 	
 	public static void main(String[] args)
 	{
 		new RunnerMain().begin();
 	}
-	//init method
+	
+	//init levels method
+	public void initLevels()
+	{
+		Animation hester, hesterFall, dog, shirt;
+		hester = new Animation(120);
+		hesterFall = new Animation(Integer.MAX_VALUE);
+		dog = new Animation(Integer.MAX_VALUE);
+		shirt = new Animation(Integer.MAX_VALUE);
+		
+		hester.addClip("res/images/hes1.png");
+		hester.addClip("res/images/hes2.png");
+		hester.addClip("res/images/hes3.png");
+		
+		hesterFall.addClip("res/images/hes2.png");
+		
+		dog.addClip("res/dog.jpg");
+		
+		shirt.addClip("res/gatzshirt.png");
+		
+		Level testLevel = new Level(camera, 20, hester, hesterFall, dog, "res/city.png", "res/city2.png");
+		
+		testLevel.addObstacle(shirt, 0, 1400);
+		
+		mapCtl.addLevel(testLevel);
+	}
+
+	//init class method
 	public void begin()
 	{
 		running = true;
 		objectList = new GameObjectList();
-//		Animation hesterAnimation = new Animation(60);
 		camera = new Camera(800, 400);
-//		hesterAnimation.addClip("res/6eMtaHG.png");
 		keyInput = new KeyInput(objectList);
 		window = new Window(800, 400, keyInput);
-//		runner = new Runner(50, 70, ID.RUNNER, hesterAnimation);
-//		GameObject ground = new GameObject(800, 50, ID.GROUND, "D:\\JPEG\\maxresdefault.jpg");
-//		ground.setY(350);
-//		
-//		objectList.addObject(ground);
-//		
-//		
-//		
-//		runner.setX(50);
-//		runner.setY(280);
-//		runner.setxV(400);
-//		camera.setFollowObj(runner);
-//		objectList.addObject(runner);
 		mapCtl = new MapControl(objectList, camera);
-		mapCtl.initMap();
+		
+		initLevels();
+		
+		mapCtl.initLevel(0);
 		window.setVisible(true);
-		bm = new BackgroundManager(camera, "res/city.png", "res/city2.png");
 		
 		mainLoop();
 	}
 	
 	public void mainLoop()
 	{
+
 		long lastTick = System.currentTimeMillis();
 		double tickTime;
+		Score.init(window);
 		while(running)
 		{
 			tickTime = (double)(System.currentTimeMillis() - lastTick) / 1000.0;
@@ -55,14 +70,12 @@ public class RunnerMain
 			camera.tickCamera(tickTime);
 			objectList.tickAll(tickTime);
 			mapCtl.manageMap();
-			bm.moveBackgrounds(tickTime);
-			
 			window.clear();
 			
-			bm.renderBackgrounds(window);
+			mapCtl.updateAndRenderBG(tickTime, window);
 			
 			objectList.renderAll(window, camera);
-			
+			Score.render(window, mapCtl);
 			window.swap();
 			try
 			{

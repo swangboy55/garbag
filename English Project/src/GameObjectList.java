@@ -92,6 +92,10 @@ public class GameObjectList {
 					}
 					if(go.isColliding(g2))
 					{
+						if(go.getID() == ID.RUNNER && g2.getID() == ID.OBSTACLE)
+						{
+							((Runner)go).setDeathState();
+						}
 						double depthX = go.getPenetrationDepthX(g2);
 						double depthY = go.getPenetrationDepthY(g2);
 						if(Math.abs(depthX) < Math.abs(depthY))

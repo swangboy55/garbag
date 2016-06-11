@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 public class BackgroundManager 
 {
 	private Camera camera;
-	public static double BG1SLOW = 0.2;
-	public static double BG2SLOW = 0.4;
+	public static double BG1SLOW = 0.5;
+	public static double BG2SLOW = 0.8;
 	private BufferedImage bg1, bg2;
 	
 	private double bgx1;
@@ -27,6 +27,12 @@ public class BackgroundManager
 			bg1 = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
 			bg2 = bg1;
 		}
+	}
+	
+	public void reset()
+	{
+		bgx1 = 0;
+		bgx2 = 0;
 	}
 	
 	public void moveBackgrounds(double deltaTime)

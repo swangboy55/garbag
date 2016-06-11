@@ -9,34 +9,49 @@ public class MapControl
 	private GameObject frontGround;
 	private Runner runner;
 	private ArrayList<GameObject> obstacleList;
+	
+	//resources
+	private Animation runnerAnim, groundAnim, fallingAnim;
+	private BackgroundManager background;
+	
+
 	private int obstacleSpawnMode;
 	private long obstacleSpawnTime;
 	private long randomRange;
 	private double obstacleSpacing;
+	private double spacingRange;
+	private int curLevel;
+	private int obstaclesGenerated;
+	private int obstaclesCleared;
+	private double spacingChallengeRate;
+	
+	private ArrayList<Level> levels;
 	
 	private long lastSpawnTime;
 	private long nextRandomSpawnTime;
 	
+	private double nextRandomSpacing;
+	
 	public static final int SPACED = 1;
 	public static final int TIMED = 2;
 	
-	private static Animation testObstacle;
-	
-	static
-	{
-		testObstacle = new Animation(Integer.MAX_VALUE);
-		testObstacle.addClip("res/gatzshirt.png");
-	}
 	
 	public MapControl(GameObjectList list, Camera camera)
 	{
-		obstacleSpawnTime = 500;
-		randomRange = 100;
+		curLevel = 0;
+		levels = new ArrayList<Level>();
+		obstacleSpawnTime = 600;
+		randomRange = 400;
 		obstacleSpawnMode = TIMED;
 		objList = list;
 		this.camera = camera;
 		obstacleSpacing = 600;
 		obstacleList = new ArrayList<GameObject>();
+	}
+	
+	public int getObstaclesCleared()
+	{
+		return obstaclesCleared;
 	}
 	
 	public Runner getRunner()
@@ -55,18 +70,23 @@ public class MapControl
 		randomRange = randRange;
 	}
 	
-	public void initMap()
+	public void setSpacingChallengeRate(double rate)
 	{
+		spacingChallengeRate = rate;
+	}
+	
+	public void initLevel(int index)
+	{
+		curLevel = index;
+		camera.setX(0);
 		objList.clearMap();
-		obstacleSpacing = 600;
-		ground1 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg", 0);
-		ground2 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg", 0);
-		Animation runnerAnim = new Animation(100);
-		runnerAnim.addClip("res/images/hes1.png");
-		runnerAnim.addClip("res/images/hes2.png");
-		runnerAnim.addClip("res/images/hes3.png");
-		Animation fallingAnim = new Animation(Integer.MAX_VALUE);
-		fallingAnim.addClip("res/images/hes3.png");
+		obstacleList.clear();
+		obstaclesGenerated = 0;
+		obstaclesCleared = 0;
+		levels.get(index).loadLevel(this);
+		
+		ground1 = new GameObject(800, 50, ID.GROUND, groundAnim, 0);
+		ground2 = new GameObject(800, 50, ID.GROUND, groundAnim, 0);
 		runner = new Runner(50, 70, ID.RUNNER, runnerAnim, fallingAnim);
 		
 		ground1.setY(350);
@@ -76,7 +96,7 @@ public class MapControl
 		frontGround = ground2;
 		
 		runner.setY(210);
-		runner.setX(500);
+		runner.setX(100);
 		runner.setxV(600);
 
 		objList.addObject(ground1);
@@ -86,16 +106,32 @@ public class MapControl
 		
 		lastSpawnTime = System.currentTimeMillis();
 		genNewRandomSpawnTime();
+		genNewRandomSpacing();
 	}
 	
 	private GameObject generateRandomObstacle()
 	{
-		return new GameObject(80, 80, ID.OBSTACLE, testObstacle, 700);
+		return levels.get(curLevel).generateRandomObstacle();
 	}
 	
 	private void genNewRandomSpawnTime()
 	{
 		nextRandomSpawnTime = (long)(Math.random() * (double)randomRange);
+	}
+	
+	private void genNewRandomSpacing()
+	{
+		nextRandomSpacing = (double)(Math.random() * spacingRange);
+		spacingRange -= spacingChallengeRate;
+		obstacleSpacing -= spacingChallengeRate;
+		if(spacingRange <= 0)
+		{
+			spacingRange = spacingChallengeRate;
+		}
+		if(obstacleSpacing <= 0)
+		{
+			obstacleSpacing = spacingChallengeRate;
+		}
 	}
 	
 	public void spacedObstacleSpawn()
@@ -104,18 +140,20 @@ public class MapControl
 		{
 			GameObject newObstacle = generateRandomObstacle();
 			newObstacle.setX(camera.getX() + camera.getW());
-			newObstacle.setY(ground1.getY() - 80);
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
+			obstaclesGenerated++;
+			genNewRandomSpacing();
 		}
 		else if((camera.getX() + camera.getW() -
-				obstacleList.get(obstacleList.size() - 1).getX()) >= obstacleSpacing)
+				obstacleList.get(obstacleList.size() - 1).getX()) >= obstacleSpacing + nextRandomSpacing)
 		{
 			GameObject newObstacle = generateRandomObstacle();
 			newObstacle.setX(camera.getX() + camera.getW());
-			newObstacle.setY(ground1.getY() - 80);
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
+			obstaclesGenerated++;
+			genNewRandomSpacing();
 		}
 	}
 	
@@ -127,9 +165,9 @@ public class MapControl
 
 			GameObject newObstacle = generateRandomObstacle();
 			newObstacle.setX(camera.getX() + camera.getW());
-			newObstacle.setY(0);
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
+			obstaclesGenerated++;
 			
 			genNewRandomSpawnTime();
 		}
@@ -137,15 +175,22 @@ public class MapControl
 	
 	public void manageMap()
 	{
-		if(obstacleSpawnMode == MapControl.SPACED)
+		if(runner.getDeathState())
 		{
-			spacedObstacleSpawn();
+			initLevel(curLevel);
+			return;
 		}
-		else if(obstacleSpawnMode == MapControl.TIMED)
+		if(obstaclesGenerated < levels.get(curLevel).numObstacles())
 		{
-			timedObstacleSpawn();
+			if(obstacleSpawnMode == MapControl.SPACED)
+			{
+				spacedObstacleSpawn();
+			}
+			else if(obstacleSpawnMode == MapControl.TIMED)
+			{
+				timedObstacleSpawn();
+			}
 		}
-		
 		for(int a=0;a<obstacleList.size();a++)
 		{
 			if(obstacleList.get(a).getX() + obstacleList.get(a).getW() < camera.getX())
@@ -153,7 +198,12 @@ public class MapControl
 				objList.removeObject(obstacleList.get(a));
 				obstacleList.remove(a);
 				a--;
+				obstaclesCleared++;
 			}
+		}
+		if(obstaclesCleared == levels.get(curLevel).numObstacles())
+		{
+			System.out.println("ADD SMOOTH TRANSITION TO NEW LEVEL");
 		}
 		if(camera.getX() + camera.getW() > frontGround.getX() + frontGround.getW())
 		{
@@ -170,8 +220,40 @@ public class MapControl
 		}
 	}
 	
-	public void setObstacleSpacing(double space)
+	public void updateAndRenderBG(double deltaTime, Window window)
+	{
+		background.moveBackgrounds(deltaTime);
+		background.renderBackgrounds(window);
+	}
+	
+	public void setObstacleSpacing(double space, double random)
 	{
 		obstacleSpacing = space;
+		spacingRange = random;
+	}
+	
+	public void setRunnerAnim(Animation runnerAnim)
+	{
+		this.runnerAnim = runnerAnim;
+	}
+
+	public void setGroundAnim(Animation groundAnim) 
+	{
+		this.groundAnim = groundAnim;
+	}
+	
+	public void setFallingAnim(Animation fallingAnim) 
+	{
+		this.fallingAnim = fallingAnim;
+	}
+	
+	public void setBackground(BackgroundManager background) 
+	{
+		this.background = background;
+	}
+	
+	public void addLevel(Level level)
+	{
+		levels.add(level);
 	}
 }

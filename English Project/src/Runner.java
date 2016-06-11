@@ -9,6 +9,7 @@ public class Runner extends GameObject
 	private Animation runningAnim;
 	private double maxXVel;
 	private double minXVel;
+	private boolean deathState;
 	
 	public Runner(double w, double h, ID id, Animation running, Animation falling)
 	{
@@ -113,4 +114,18 @@ public class Runner extends GameObject
 		maxXVel = mx;
 	}
 	
+	public void setDeathState()
+	{
+		deathState = true;
+	}
+	
+	public void resetDeathState()
+	{
+		deathState = false;
+	}
+	
+	public boolean getDeathState()
+	{
+		return deathState;
+	}
 }

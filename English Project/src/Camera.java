@@ -96,4 +96,9 @@ public class Camera
 	{
 		return (double)h;
 	}
+	
+	public void setX(double x)
+	{
+		this.x = x;
+	}
 }
