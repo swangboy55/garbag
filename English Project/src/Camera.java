@@ -2,7 +2,6 @@
 public class Camera 
 {
 	private double xV;
-	private double yV;
 	private double x;
 	private double y;
 	private int w;
@@ -62,6 +61,11 @@ public class Camera
 //			x += followObj.getX() - followObj.getPrevX();
 			xV = followObj.getxV();
 		}
+	}
+	
+	public double getxV()
+	{
+		return xV;
 	}
 	
 	public double translateX(double x)

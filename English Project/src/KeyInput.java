@@ -14,9 +14,9 @@ public class KeyInput extends KeyAdapter{
 		Runner player = list.getRunner();
 
 		if (key == KeyEvent.VK_D)
-			player.setxAccel(100);
+			player.setxAccel(400);
 		if (key == KeyEvent.VK_A)
-			player.setxAccel(-100);
+			player.setxAccel(-400);
 		if (key == KeyEvent.VK_SPACE)
 			player.jump();
 	}

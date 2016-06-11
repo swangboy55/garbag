@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 public class BackgroundManager 
 {
 	private Camera camera;
-	private Runner runner;
 	public static double BG1SLOW = 0.2;
 	public static double BG2SLOW = 0.4;
 	private BufferedImage bg1, bg2;
@@ -15,9 +14,8 @@ public class BackgroundManager
 	private double bgx1;
 	private double bgx2;
 	
-	public BackgroundManager(Runner runner, Camera camera, String path1, String path2)
+	public BackgroundManager(Camera camera, String path1, String path2)
 	{
-		this.runner = runner;
 		this.camera = camera;
 		try
 		{
@@ -31,10 +29,10 @@ public class BackgroundManager
 		}
 	}
 	
-	public void moveBackgrounds()
+	public void moveBackgrounds(double deltaTime)
 	{
-		bgx1 += (runner.getX() - runner.getPrevX()) * BG1SLOW;
-		bgx2 += (runner.getX() - runner.getPrevX()) * BG2SLOW;
+		bgx1 += (camera.getxV() * deltaTime) * BG1SLOW;
+		bgx2 += (camera.getxV() * deltaTime) * BG2SLOW;
 		
 		if(bgx2 + (bg2.getWidth() * 2) < camera.getX() + camera.getW())
 		{

@@ -38,7 +38,7 @@ public class RunnerMain
 		mapCtl = new MapControl(objectList, camera);
 		mapCtl.initMap();
 		window.setVisible(true);
-		bm = new BackgroundManager(mapCtl.getRunner(), camera, "res/bg1.png", "res/bg2.png");
+		bm = new BackgroundManager(camera, "res/bg1.png", "res/bg2.png");
 		
 		mainLoop();
 	}
@@ -55,7 +55,7 @@ public class RunnerMain
 			camera.tickCamera(tickTime);
 			objectList.tickAll(tickTime);
 			mapCtl.manageMap();
-			bm.moveBackgrounds();
+			bm.moveBackgrounds(tickTime);
 			
 			window.clear();
 			

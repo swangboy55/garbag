@@ -7,12 +7,16 @@ public class Runner extends GameObject
 	private double xAccel;
 	private Animation fallingAnim;
 	private Animation runningAnim;
+	private double maxXVel;
+	private double minXVel;
 	
 	public Runner(double w, double h, ID id, Animation running, Animation falling)
 	{
 		super(w, h, id, running);
 		fallingAnim = falling;
 		runningAnim = running;
+		maxXVel = 1300;
+		minXVel = 100;
 	}
 	
 	public void setxAccel(double accel)
@@ -31,6 +35,14 @@ public class Runner extends GameObject
 		super.tick(deltaTime);
 		yV += GRAV * deltaTime;
 		xV += xAccel * deltaTime;
+		if(xV > maxXVel)
+		{
+			xV = maxXVel;
+		}
+		else if(xV < minXVel)
+		{
+			xV = minXVel;
+		}
 	}
 	
 	
@@ -91,4 +103,15 @@ public class Runner extends GameObject
 	{
 		return jumping;
 	}
+	
+	public void setMinXVel(double mx)
+	{
+		minXVel = mx;
+	}
+	
+	public void setMaxXVel(double mx)
+	{
+		maxXVel = mx;
+	}
+	
 }

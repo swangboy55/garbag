@@ -4,12 +4,21 @@ public class MapControl
 {
 	private GameObjectList objList;
 	private Camera camera;
-	private double obstacleSpacing;
 	private GameObject ground1;
 	private GameObject ground2;
 	private GameObject frontGround;
 	private Runner runner;
 	private ArrayList<GameObject> obstacleList;
+	private int obstacleSpawnMode;
+	private long obstacleSpawnTime;
+	private long randomRange;
+	private double obstacleSpacing;
+	
+	private long lastSpawnTime;
+	private long nextRandomSpawnTime;
+	
+	public static final int SPACED = 1;
+	public static final int TIMED = 2;
 	
 	private static Animation testObstacle;
 	
@@ -21,6 +30,9 @@ public class MapControl
 	
 	public MapControl(GameObjectList list, Camera camera)
 	{
+		obstacleSpawnTime = 500;
+		randomRange = 100;
+		obstacleSpawnMode = TIMED;
 		objList = list;
 		this.camera = camera;
 		obstacleSpacing = 600;
@@ -30,6 +42,17 @@ public class MapControl
 	public Runner getRunner()
 	{
 		return runner;
+	}
+	
+	public void setObstacleSpawnMode(int mode)
+	{
+		obstacleSpawnMode = mode;
+	}
+	
+	public void setObstacleSpawnTime(long baseTime, long randRange)
+	{
+		obstacleSpawnTime = baseTime;
+		randomRange = randRange;
 	}
 	
 	public void initMap()
@@ -60,13 +83,26 @@ public class MapControl
 		objList.addObject(ground2);
 		objList.addObject(runner);
 		camera.setFollowObj(runner);
+		
+		lastSpawnTime = System.currentTimeMillis();
+		genNewRandomSpawnTime();
 	}
 	
-	public void manageMap()
+	private GameObject generateRandomObstacle()
+	{
+		return new GameObject(80, 80, ID.OBSTACLE, testObstacle);
+	}
+	
+	private void genNewRandomSpawnTime()
+	{
+		nextRandomSpawnTime = (long)(Math.random() * (double)randomRange);
+	}
+	
+	public void spacedObstacleSpawn()
 	{
 		if(obstacleList.size() == 0)
 		{
-			GameObject newObstacle = new GameObject(80, 80, ID.OBSTACLE, testObstacle);
+			GameObject newObstacle = generateRandomObstacle();
 			newObstacle.setX(camera.getX() + camera.getW());
 			newObstacle.setY(ground1.getY() - 80);
 			objList.addObject(newObstacle);
@@ -75,11 +111,39 @@ public class MapControl
 		else if((camera.getX() + camera.getW() -
 				obstacleList.get(obstacleList.size() - 1).getX()) >= obstacleSpacing)
 		{
-			GameObject newObstacle = new GameObject(80, 80, ID.OBSTACLE, testObstacle);
+			GameObject newObstacle = generateRandomObstacle();
 			newObstacle.setX(camera.getX() + camera.getW());
 			newObstacle.setY(ground1.getY() - 80);
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
+		}
+	}
+	
+	public void timedObstacleSpawn()
+	{
+		if(System.currentTimeMillis() - lastSpawnTime > obstacleSpawnTime + nextRandomSpawnTime)
+		{
+			lastSpawnTime = System.currentTimeMillis();
+
+			GameObject newObstacle = generateRandomObstacle();
+			newObstacle.setX(camera.getX() + camera.getW());
+			newObstacle.setY(ground1.getY() - 80);
+			objList.addObject(newObstacle);
+			obstacleList.add(newObstacle);
+			
+			genNewRandomSpawnTime();
+		}
+	}
+	
+	public void manageMap()
+	{
+		if(obstacleSpawnMode == MapControl.SPACED)
+		{
+			spacedObstacleSpawn();
+		}
+		else if(obstacleSpawnMode == MapControl.TIMED)
+		{
+			timedObstacleSpawn();
 		}
 		
 		for(int a=0;a<obstacleList.size();a++)
