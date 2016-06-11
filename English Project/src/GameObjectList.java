@@ -78,11 +78,15 @@ public class GameObjectList {
 		for(GameObject go : list)
 		{
 			go.tick(deltaTime);
-			if(go.getID() == ID.RUNNER)//add more later
+			if(go.getID() == ID.RUNNER || go.getID() == ID.OBSTACLE)//add more later
 			{
 				for(GameObject g2 : list)
 				{
-					if(go == g2)
+					if(go == g2 || g2.getID() == ID.RUNNER)
+					{
+						continue;
+					}
+					if(go.getID() == ID.OBSTACLE && g2.getID() == ID.OBSTACLE)
 					{
 						continue;
 					}

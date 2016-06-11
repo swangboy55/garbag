@@ -48,10 +48,10 @@ public class BackgroundManager
 	public void renderBackgrounds(Window window)
 	{
 		Graphics g = window.getBufferGraphics();
-
+		
 		g.drawImage(bg2, (int)(bgx2 - camera.getX()), 0, null);
-		g.drawImage(bg1, (int)(bgx1 - camera.getX()), 0, null);
 		g.drawImage(bg2, (int)(bgx2 - camera.getX()) + bg2.getWidth(), 0, null);
+		g.drawImage(bg1, (int)(bgx1 - camera.getX()), 0, null);
 		g.drawImage(bg1, (int)(bgx1 - camera.getX()) + bg1.getWidth(), 0, null);
 	}
 }

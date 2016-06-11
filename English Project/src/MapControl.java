@@ -25,7 +25,7 @@ public class MapControl
 	static
 	{
 		testObstacle = new Animation(Integer.MAX_VALUE);
-		testObstacle.addClip("res/6eMtaHG.png");
+		testObstacle.addClip("res/gatzshirt.png");
 	}
 	
 	public MapControl(GameObjectList list, Camera camera)
@@ -59,8 +59,8 @@ public class MapControl
 	{
 		objList.clearMap();
 		obstacleSpacing = 600;
-		ground1 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg");
-		ground2 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg");
+		ground1 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg", 0);
+		ground2 = new GameObject(800, 50, ID.GROUND, "res/dog.jpg", 0);
 		Animation runnerAnim = new Animation(100);
 		runnerAnim.addClip("res/images/hes1.png");
 		runnerAnim.addClip("res/images/hes2.png");
@@ -90,7 +90,7 @@ public class MapControl
 	
 	private GameObject generateRandomObstacle()
 	{
-		return new GameObject(80, 80, ID.OBSTACLE, testObstacle);
+		return new GameObject(80, 80, ID.OBSTACLE, testObstacle, 700);
 	}
 	
 	private void genNewRandomSpawnTime()
@@ -127,7 +127,7 @@ public class MapControl
 
 			GameObject newObstacle = generateRandomObstacle();
 			newObstacle.setX(camera.getX() + camera.getW());
-			newObstacle.setY(ground1.getY() - 80);
+			newObstacle.setY(0);
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
 			

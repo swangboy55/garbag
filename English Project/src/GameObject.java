@@ -10,18 +10,20 @@ public class GameObject
 	protected double h, w;
 	protected ID id;
 	protected Animation sprite;
+	protected double gravity;
 
-	public GameObject(double w, double h, ID id, String image)
+	public GameObject(double w, double h, ID id, String image, double gravity)
 	{
-		this(w, h, id, new Animation(Integer.MAX_VALUE));
+		this(w, h, id, new Animation(Integer.MAX_VALUE), gravity);
 		sprite.addClip(image);
 	}
 
-	public GameObject(double w, double h, ID id, Animation anim)
+	public GameObject(double w, double h, ID id, Animation anim, double gravity)
 	{
 		this.w = w;
 		this.h = h;
 		this.id = id;
+		this.gravity = gravity;
 		sprite = anim;
 	}
 
@@ -43,6 +45,7 @@ public class GameObject
 		sprite.nextFrame();
 		x += xV * deltaTime;
 		y += yV * deltaTime;
+		yV += gravity * deltaTime;
 	}
 	public boolean isColliding(GameObject other)
 	{

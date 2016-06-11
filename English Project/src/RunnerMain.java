@@ -38,7 +38,7 @@ public class RunnerMain
 		mapCtl = new MapControl(objectList, camera);
 		mapCtl.initMap();
 		window.setVisible(true);
-		bm = new BackgroundManager(camera, "res/bg1.png", "res/bg2.png");
+		bm = new BackgroundManager(camera, "res/city.png", "res/city2.png");
 		
 		mainLoop();
 	}

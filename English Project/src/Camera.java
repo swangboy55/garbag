@@ -58,7 +58,6 @@ public class Camera
 	{
 		if(followObj != null)
 		{
-//			x += followObj.getX() - followObj.getPrevX();
 			xV = followObj.getxV();
 		}
 	}

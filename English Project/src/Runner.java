@@ -12,7 +12,7 @@ public class Runner extends GameObject
 	
 	public Runner(double w, double h, ID id, Animation running, Animation falling)
 	{
-		super(w, h, id, running);
+		super(w, h, id, running, GRAV);
 		fallingAnim = falling;
 		runningAnim = running;
 		maxXVel = 1300;
@@ -33,7 +33,6 @@ public class Runner extends GameObject
 		}
 		prevYv = yV;
 		super.tick(deltaTime);
-		yV += GRAV * deltaTime;
 		xV += xAccel * deltaTime;
 		if(xV > maxXVel)
 		{
