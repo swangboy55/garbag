@@ -49,6 +49,11 @@ public class MapControl
 		obstacleList = new ArrayList<GameObject>();
 	}
 	
+	public int getCurLevel()
+	{
+		return curLevel;
+	}
+	
 	public int getObstaclesCleared()
 	{
 		return obstaclesCleared;

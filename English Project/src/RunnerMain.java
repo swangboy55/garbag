@@ -1,5 +1,10 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class RunnerMain 
 {
@@ -11,12 +16,38 @@ public class RunnerMain
 	private MapControl mapCtl;
 	private static boolean doGradient;
 	private static double gradientAmt;
+	private static ArrayList<BufferedImage> explanations = new ArrayList<BufferedImage>();
+	public static boolean keyPressed;
+//	private static boolean doIntroduction;
+	
+	static
+	{
+		BufferedImage scarletExp = null, tewwgExp = null, huckExp = null, gatzExp = null;
+		try
+		{
+			scarletExp = ImageIO.read(new File("res/explanation/scarletExp.png"));
+			tewwgExp = ImageIO.read(new File("res/explanation/tewwgExp.png"));
+			huckExp = ImageIO.read(new File("res/explanation/huckExp.png"));
+			gatzExp = ImageIO.read(new File("res/explanation/gatzExp.png"));
+		}
+		catch(Exception e){}
+		explanations.add(scarletExp);
+		explanations.add(tewwgExp);
+		explanations.add(huckExp);
+		explanations.add(gatzExp);
+		keyPressed = false;
+	}
 	
 	public static void main(String[] args)
 	{
 		doGradient = false;
 		new RunnerMain().begin();
 	}
+	
+//	public boolean introducingLevel()
+//	{
+//		return doIntroduction;
+//	}
 	
 	//init levels method
 	public void initLevels()
@@ -58,6 +89,8 @@ public class RunnerMain
 		
 		mapCtl.initLevel(0);
 		window.setVisible(true);
+		gradientAmt = 1;
+		doGradient = true;
 		
 		mainLoop();
 	}
@@ -84,11 +117,11 @@ public class RunnerMain
 		}
 		else if(gradientAmt < 2)
 		{
-			g.setColor(Color.black);
 			g.fillRect(0, 0, window.getWidth(), window.getHeight());
-			gradientAmt += 4 * deltaTime;
-			if(gradientAmt >= 2.0)
+			g.drawImage(explanations.get(mapCtl.getCurLevel()), 0, 0, null);
+			if(keyPressed)
 			{
+				keyPressed = false;
 				gradientAmt = 2;
 				mapCtl.initLevel(0);
 			}

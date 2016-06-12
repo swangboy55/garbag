@@ -19,6 +19,7 @@ public class KeyInput extends KeyAdapter{
 			player.setxAccel(-400);
 		if (key == KeyEvent.VK_SPACE)
 			player.jump();
+		RunnerMain.keyPressed = true;
 	}
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -27,6 +28,7 @@ public class KeyInput extends KeyAdapter{
 		if (key == KeyEvent.VK_D || key == KeyEvent.VK_A)
 			player.setxAccel(0);
 
+		RunnerMain.keyPressed = false;
 
 	}
 
