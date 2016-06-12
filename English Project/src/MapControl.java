@@ -203,7 +203,9 @@ public class MapControl
 		}
 		if(obstaclesCleared == levels.get(curLevel).numObstacles())
 		{
-			System.out.println("ADD SMOOTH TRANSITION TO NEW LEVEL");
+			camera.setFollowObj(null);
+			endOfLevel();
+			return;
 		}
 		if(camera.getX() + camera.getW() > frontGround.getX() + frontGround.getW())
 		{
@@ -217,6 +219,14 @@ public class MapControl
 				frontGround = ground1;
 				frontGround.setX(ground2.getX() + 800);
 			}
+		}
+	}
+	
+	void endOfLevel()
+	{
+		if(runner.getX() > camera.getX() + camera.getW())
+		{
+			RunnerMain.initGradient();
 		}
 	}
 	

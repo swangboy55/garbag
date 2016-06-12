@@ -60,6 +60,10 @@ public class Camera
 		{
 			xV = followObj.getxV();
 		}
+		else
+		{
+			xV = 0;
+		}
 	}
 	
 	public double getxV()
