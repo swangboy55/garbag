@@ -53,16 +53,16 @@ public class RunnerMain
 	public void initLevels()
 	{
 		Animation hester, hesterFall, dog, shirt;
-		hester = new Animation(120);
+		hester = new Animation(90);
 		hesterFall = new Animation(Integer.MAX_VALUE);
 		dog = new Animation(Integer.MAX_VALUE);
 		shirt = new Animation(Integer.MAX_VALUE);
 		
-		hester.addClip("res/images/hes1.png");
-		hester.addClip("res/images/hes2.png");
-		hester.addClip("res/images/hes3.png");
+		hester.addClip("res/images/jan1.png");
+		hester.addClip("res/images/jan2.png");
+		hester.addClip("res/images/jan3.png");
 		
-		hesterFall.addClip("res/images/hes2.png");
+		hesterFall.addClip("res/images/jan1.png");
 		
 		dog.addClip("res/dog.jpg");
 		
