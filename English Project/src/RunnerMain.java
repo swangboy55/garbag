@@ -64,11 +64,11 @@ public class RunnerMain
 		
 		hesterFall.addClip("res/images/jan1.png");
 		
-		dog.addClip("res/dog.jpg");
+		dog.addClip("res/backgrounds/dog.jpg");
 		
-		shirt.addClip("res/gatzshirt.png");
+		shirt.addClip("res/obstacles/gatzshirt.png");
 		
-		Level testLevel = new Level(camera, 1, hester, hesterFall, dog, "res/city.png", "res/city2.png");
+		Level testLevel = new Level(camera, 1, hester, hesterFall, dog, "res/backgrounds/city1.png", "res/backgrounds/city2.png");
 		
 		testLevel.addObstacle(shirt, 0, 1400);
 		
