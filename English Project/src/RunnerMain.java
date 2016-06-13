@@ -17,7 +17,12 @@ public class RunnerMain
 	private static boolean doGradient;
 	private static double gradientAmt;
 	private static ArrayList<BufferedImage> explanations = new ArrayList<BufferedImage>();
+	private static BufferedImage pause;
 	public static boolean keyPressed;
+	private static boolean gameStarted = true;
+	public static boolean paused = false;
+	
+	
 //	private static boolean doIntroduction;
 	
 	static
@@ -26,6 +31,7 @@ public class RunnerMain
 		try
 		{
 			scarletExp = ImageIO.read(new File("res/explanation/scarletExp.png"));
+			pause = ImageIO.read(new File("res/paused.png"));
 			tewwgExp = ImageIO.read(new File("res/explanation/tewwgExp.png"));
 			huckExp = ImageIO.read(new File("res/explanation/huckExp.png"));
 			gatzExp = ImageIO.read(new File("res/explanation/gatzExp.png"));
@@ -52,27 +58,107 @@ public class RunnerMain
 	//init levels method
 	public void initLevels()
 	{
-		Animation hester, hesterFall, dog, shirt;
-		hester = new Animation(90);
-		hesterFall = new Animation(Integer.MAX_VALUE);
-		dog = new Animation(Integer.MAX_VALUE);
-		shirt = new Animation(Integer.MAX_VALUE);
-		
-		hester.addClip("res/images/jan1.png");
-		hester.addClip("res/images/jan2.png");
-		hester.addClip("res/images/jan3.png");
-		
-		hesterFall.addClip("res/images/jan1.png");
-		
-		dog.addClip("res/backgrounds/dog.jpg");
-		
-		shirt.addClip("res/obstacles/gatzshirt.png");
-		
-		Level testLevel = new Level(camera, 1, hester, hesterFall, dog, "res/backgrounds/city1.png", "res/backgrounds/city2.png");
-		
-		testLevel.addObstacle(shirt, 0, 1400);
-		
-		mapCtl.addLevel(testLevel);
+		{
+			Animation hester, hesterFall, hesterGrass;
+			Animation pearl, scaffold, scarlet;
+			hester = new Animation(90);
+			hesterFall = new Animation(Integer.MAX_VALUE);
+			hesterGrass = new Animation(Integer.MAX_VALUE);
+			pearl = new Animation(Integer.MAX_VALUE);
+			scaffold = new Animation(Integer.MAX_VALUE);
+			scarlet = new Animation(Integer.MAX_VALUE);
+			
+			hester.addClip("res/images/hes1.png");
+			hester.addClip("res/images/hes2.png");
+			hester.addClip("res/images/hes3.png");
+			
+			hesterFall.addClip("res/images/hes1.png");
+			
+			hesterGrass.addClip("res/backgrounds/grassground.png"); 
+			
+			pearl.addClip("res/obstacles/pearl.png");
+			scaffold.addClip("res/obstacles/scaffold.png");
+			scarlet.addClip("res/obstacles/scarlet.png");
+			
+			Level testLevel = new Level(camera, 20, hester, hesterFall, hesterGrass, "res/backgrounds/scarlet1.png", "res/backgrounds/scarlet2.png", 500, 10);
+
+			testLevel.addObstacle(pearl, 350 - 50, 1400, 50, 50);
+			testLevel.addObstacle(scaffold, 350 - 70, 1400, 70, 70);
+			testLevel.addObstacle(scarlet, 0, 1400, 60, 60);
+			
+			mapCtl.addLevel(testLevel);
+		}
+		{
+			Animation janie, janieFall, janieGrass;
+			Animation mule;
+			janie = new Animation(90);
+			janieFall = new Animation(Integer.MAX_VALUE);
+			janieGrass = new Animation(Integer.MAX_VALUE);
+			mule = new Animation(Integer.MAX_VALUE);
+			
+			janie.addClip("res/images/jan1.png");
+			janie.addClip("res/images/jan2.png");
+			janie.addClip("res/images/jan3.png");
+			
+			janieFall.addClip("res/images/jan1.png");
+			
+			janieGrass.addClip("res/backgrounds/grassground.png");
+			
+			mule.addClip("res/obstacles/mule.png");
+			
+			Level testLevel = new Level(camera, 25, janie, janieFall, janieGrass, "res/backgrounds/tewwg1.png", "res/backgrounds/tewwg2.png", 500, 7);
+			
+			testLevel.addObstacle(mule, 0, 1400, 70, 60);
+			
+			mapCtl.addLevel(testLevel);
+		}
+		{
+			Animation hester, hesterFall, hesterGrass, shirt;
+			hester = new Animation(90);
+			hesterFall = new Animation(Integer.MAX_VALUE);
+			hesterGrass = new Animation(Integer.MAX_VALUE);
+			shirt = new Animation(Integer.MAX_VALUE);
+			
+			hester.addClip("res/images/huc1.png");
+			hester.addClip("res/images/huc2.png");
+			hester.addClip("res/images/huc3.png");
+			hester.addClip("res/images/huc2.png");
+			
+			hesterFall.addClip("res/images/huc1.png");
+			
+			hesterGrass.addClip("res/backgrounds/huckground.png");
+			
+			shirt.addClip("res/obstacles/gatzshirt.png");
+			
+			Level testLevel = new Level(camera, 1, hester, hesterFall, hesterGrass, "res/backgrounds/huck1.png", "res/backgrounds/huck2.png", 500, 10);
+			
+		//	testLevel.addObstacle(shirt, 0, 1400);
+			
+			mapCtl.addLevel(testLevel);
+		}
+		{
+			Animation hester, hesterFall, hesterGrass, shirt;
+			hester = new Animation(90);
+			hesterFall = new Animation(Integer.MAX_VALUE);
+			hesterGrass = new Animation(Integer.MAX_VALUE);
+			shirt = new Animation(Integer.MAX_VALUE);
+			
+			hester.addClip("res/images/gat1.png");
+			hester.addClip("res/images/gat2.png");
+			hester.addClip("res/images/gat3.png");
+			
+			hesterFall.addClip("res/images/gat1.png");
+			
+			hesterGrass.addClip("res/backgrounds/gatzground.png");
+			
+			shirt.addClip("res/obstacles/gatzshirt.png");
+			
+			Level testLevel = new Level(camera, 1, hester, hesterFall, hesterGrass, "res/backgrounds/city1.png", "res/backgrounds/city2.png", 500, 10);
+			
+		//	testLevel.addObstacle(shirt, 0, 1400);
+			
+			mapCtl.addLevel(testLevel);
+		}
 	}
 
 	//init class method
@@ -123,7 +209,15 @@ public class RunnerMain
 			{
 				keyPressed = false;
 				gradientAmt = 2;
-				mapCtl.initLevel(0);
+				if(gameStarted)
+				{
+					mapCtl.initLevel(0);
+					gameStarted = false;
+				}
+				else
+				{
+					mapCtl.initLevel(mapCtl.getCurLevel() + 1);
+				}
 			}
 		}
 		else if(gradientAmt < 3)
@@ -140,6 +234,18 @@ public class RunnerMain
 		}
 	}
 	
+	
+	
+	private void renderPaused(Window wind)
+	{
+		Graphics g = wind.getBufferGraphics();
+		
+		g.setColor(Color.GREEN);
+		
+		g.drawImage(pause, 0, 0, null);
+	}
+	
+	
 	public void mainLoop()
 	{
 		long lastTick = System.currentTimeMillis();
@@ -152,14 +258,26 @@ public class RunnerMain
 			if(!RunnerMain.doGradient)
 			{
 				camera.inheritObjectXMove();
-				camera.tickCamera(tickTime);
-				objectList.tickAll(tickTime);
-				mapCtl.manageMap();
+				if(!paused)
+				{
+					camera.tickCamera(tickTime);
+					objectList.tickAll(tickTime);
+					mapCtl.manageMap();
+				}
 				window.clear();
-				
-				mapCtl.updateAndRenderBG(tickTime, window);
-				
+				if(paused)
+				{
+					mapCtl.updateAndRenderBG(0, window);
+				}
+				else
+				{
+					mapCtl.updateAndRenderBG(tickTime, window);
+				}
 				objectList.renderAll(window, camera);
+				if(paused)
+				{
+					renderPaused(window);
+				}
 				Score.render(window, mapCtl);
 			}
 			else

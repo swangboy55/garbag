@@ -1,7 +1,7 @@
 public class Runner extends GameObject
 {
 
-	public static final double GRAV = 7400;
+	public static final double GRAV = 6400;
 	private double prevYv;
 	private boolean jumping;
 	private double xAccel;

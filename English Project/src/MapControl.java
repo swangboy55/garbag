@@ -144,6 +144,10 @@ public class MapControl
 		if(obstacleList.size() == 0)
 		{
 			GameObject newObstacle = generateRandomObstacle();
+			if(newObstacle == null)
+			{
+				return;
+			}
 			newObstacle.setX(camera.getX() + camera.getW());
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
@@ -154,6 +158,10 @@ public class MapControl
 				obstacleList.get(obstacleList.size() - 1).getX()) >= obstacleSpacing + nextRandomSpacing)
 		{
 			GameObject newObstacle = generateRandomObstacle();
+			if(newObstacle == null)
+			{
+				return;
+			}
 			newObstacle.setX(camera.getX() + camera.getW());
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
@@ -169,6 +177,10 @@ public class MapControl
 			lastSpawnTime = System.currentTimeMillis();
 
 			GameObject newObstacle = generateRandomObstacle();
+			if(newObstacle == null)
+			{
+				return;
+			}
 			newObstacle.setX(camera.getX() + camera.getW());
 			objList.addObject(newObstacle);
 			obstacleList.add(newObstacle);
