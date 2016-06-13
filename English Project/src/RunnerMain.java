@@ -5,6 +5,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class RunnerMain 
 {
@@ -17,30 +20,40 @@ public class RunnerMain
 	private static boolean doGradient;
 	private static double gradientAmt;
 	private static ArrayList<BufferedImage> explanations = new ArrayList<BufferedImage>();
+	private static ArrayList<String> BGMs = new ArrayList<String>();
 	private static BufferedImage pause;
 	public static boolean keyPressed;
 	private static boolean gameStarted = true;
 	public static boolean paused = false;
-	
+	private static Clip curClip;
 	
 //	private static boolean doIntroduction;
 	
 	static
 	{
-		BufferedImage scarletExp = null, tewwgExp = null, huckExp = null, gatzExp = null;
+		BufferedImage scarletExp = null, tewwgExp = null, huckExp = null, gatzExp = null, credits = null;
 		try
 		{
-			scarletExp = ImageIO.read(new File("res/explanation/scarletExp.png"));
 			pause = ImageIO.read(new File("res/paused.png"));
+			scarletExp = ImageIO.read(new File("res/explanation/scarletExp.png"));
 			tewwgExp = ImageIO.read(new File("res/explanation/tewwgExp.png"));
 			huckExp = ImageIO.read(new File("res/explanation/huckExp.png"));
-			gatzExp = ImageIO.read(new File("res/explanation/gatzExp.png"));
+			gatzExp = ImageIO.read(new File("res/explanation/gatsbyExp.png"));
+			credits = ImageIO.read(new File("res/credits.png"));
+			curClip = AudioSystem.getClip();
 		}
 		catch(Exception e){}
 		explanations.add(scarletExp);
 		explanations.add(tewwgExp);
 		explanations.add(huckExp);
 		explanations.add(gatzExp);
+		explanations.add(credits);
+		BGMs.add("res/music/Forest.wav");
+		BGMs.add("res/music/god.wav");
+		BGMs.add("res/music/huck.wav");
+		BGMs.add("res/music/gatsby.wav");
+		
+		
 		keyPressed = false;
 	}
 	
@@ -80,21 +93,23 @@ public class RunnerMain
 			scaffold.addClip("res/obstacles/scaffold.png");
 			scarlet.addClip("res/obstacles/scarlet.png");
 			
-			Level testLevel = new Level(camera, 20, hester, hesterFall, hesterGrass, "res/backgrounds/scarlet1.png", "res/backgrounds/scarlet2.png", 500, 10);
+			Level level1 = new Level(camera, 20, hester, hesterFall, hesterGrass, "res/backgrounds/scarlet1.png", "res/backgrounds/scarlet2.png", 500, 10);
 
-			testLevel.addObstacle(pearl, 350 - 50, 1400, 50, 50);
-			testLevel.addObstacle(scaffold, 350 - 70, 1400, 70, 70);
-			testLevel.addObstacle(scarlet, 0, 1400, 60, 60);
+			level1.addObstacle(pearl, 350 - 50, 1400, 50, 50);
+			level1.addObstacle(scaffold, 350 - 70, 1400, 70, 70);
+			level1.addObstacle(scarlet, 0, 400, 60, 60);
 			
-			mapCtl.addLevel(testLevel);
+			mapCtl.addLevel(level1);
 		}
 		{
 			Animation janie, janieFall, janieGrass;
-			Animation mule;
+			Animation mule, rag, hurricane;
 			janie = new Animation(90);
 			janieFall = new Animation(Integer.MAX_VALUE);
 			janieGrass = new Animation(Integer.MAX_VALUE);
 			mule = new Animation(Integer.MAX_VALUE);
+			rag = new Animation(Integer.MAX_VALUE);
+			hurricane = new Animation(Integer.MAX_VALUE);
 			
 			janie.addClip("res/images/jan1.png");
 			janie.addClip("res/images/jan2.png");
@@ -105,59 +120,82 @@ public class RunnerMain
 			janieGrass.addClip("res/backgrounds/grassground.png");
 			
 			mule.addClip("res/obstacles/mule.png");
+			rag.addClip("res/obstacles/cloth.png");
+			hurricane.addClip("res/obstacles/hurricaneharbor.png");
 			
-			Level testLevel = new Level(camera, 25, janie, janieFall, janieGrass, "res/backgrounds/tewwg1.png", "res/backgrounds/tewwg2.png", 500, 7);
+			Level level2 = new Level(camera, 25, janie, janieFall, janieGrass, "res/backgrounds/tewwg1.png", "res/backgrounds/tewwg2.png", 500, 7);
 			
-			testLevel.addObstacle(mule, 0, 1400, 70, 60);
+			level2.addObstacle(mule, 350 - 60, 0, 70, 60);
+			level2.addObstacle(rag, 0, 400, 60, 60);
+			level2.addObstacle(hurricane, 0, 400, 70, 70);
 			
-			mapCtl.addLevel(testLevel);
+			mapCtl.addLevel(level2);
 		}
 		{
-			Animation hester, hesterFall, hesterGrass, shirt;
-			hester = new Animation(90);
-			hesterFall = new Animation(Integer.MAX_VALUE);
-			hesterGrass = new Animation(Integer.MAX_VALUE);
-			shirt = new Animation(Integer.MAX_VALUE);
+			Animation huck, huckFall, huckWater;
+			Animation whiskey, crown, school;
+			huck = new Animation(90);
+			huckFall = new Animation(Integer.MAX_VALUE);
+			huckWater = new Animation(Integer.MAX_VALUE);
+			whiskey = new Animation(Integer.MAX_VALUE);
+			crown = new Animation(Integer.MAX_VALUE);
+			school = new Animation(Integer.MAX_VALUE);
 			
-			hester.addClip("res/images/huc1.png");
-			hester.addClip("res/images/huc2.png");
-			hester.addClip("res/images/huc3.png");
-			hester.addClip("res/images/huc2.png");
+			huck.addClip("res/images/huc1.png");
+			huck.addClip("res/images/huc2.png");
+			huck.addClip("res/images/huc3.png");
+			huck.addClip("res/images/huc2.png");
 			
-			hesterFall.addClip("res/images/huc1.png");
+			huckFall.addClip("res/images/huc3.png");
 			
-			hesterGrass.addClip("res/backgrounds/huckground.png");
+			huckWater.addClip("res/backgrounds/huckground.png");
+
+			whiskey.addClip("res/obstacles/whisky.png");
+			crown.addClip("res/obstacles/crown.png");
+			school.addClip("res/obstacles/school.png");
 			
-			shirt.addClip("res/obstacles/gatzshirt.png");
+			Level level3 = new Level(camera, 30, huck, huckFall, huckWater, "res/backgrounds/huck1.png", "res/backgrounds/huck2.png", 500, 10);
+
+			level3.addObstacle(whiskey, 350 - 60, 0, 50, 60);
+			level3.addObstacle(crown, 350 - 32, 0, 32, 32);
+			level3.addObstacle(school, 350 - 70, 0, 70, 70);
 			
-			Level testLevel = new Level(camera, 1, hester, hesterFall, hesterGrass, "res/backgrounds/huck1.png", "res/backgrounds/huck2.png", 500, 10);
-			
-		//	testLevel.addObstacle(shirt, 0, 1400);
-			
-			mapCtl.addLevel(testLevel);
+			mapCtl.addLevel(level3);
 		}
 		{
-			Animation hester, hesterFall, hesterGrass, shirt;
-			hester = new Animation(90);
-			hesterFall = new Animation(Integer.MAX_VALUE);
-			hesterGrass = new Animation(Integer.MAX_VALUE);
+			Animation gatsby, gatsbyFall, gatsbyRoad;
+			Animation shirt, clock, car, light, dollar;
+			gatsby = new Animation(90);
+			gatsbyFall = new Animation(Integer.MAX_VALUE);
+			gatsbyRoad = new Animation(Integer.MAX_VALUE);
 			shirt = new Animation(Integer.MAX_VALUE);
+			clock = new Animation(Integer.MAX_VALUE);
+			car = new Animation(Integer.MAX_VALUE);
+			light = new Animation(Integer.MAX_VALUE);
+			dollar = new Animation(Integer.MAX_VALUE);
 			
-			hester.addClip("res/images/gat1.png");
-			hester.addClip("res/images/gat2.png");
-			hester.addClip("res/images/gat3.png");
+			gatsby.addClip("res/images/gat1.png");
+			gatsby.addClip("res/images/gat2.png");
+			gatsby.addClip("res/images/gat3.png");
 			
-			hesterFall.addClip("res/images/gat1.png");
+			gatsbyFall.addClip("res/images/gat1.png");
 			
-			hesterGrass.addClip("res/backgrounds/gatzground.png");
+			gatsbyRoad.addClip("res/backgrounds/gatzground.png");
 			
 			shirt.addClip("res/obstacles/gatzshirt.png");
+			clock.addClip("res/obstacles/clcockkckckk.png");
+			car.addClip("res/obstacles/choochoo.png");
+			light.addClip("res/obstacles/light.png");
+			dollar.addClip("res/obstacles/hollahollagetdolla.png");
 			
-			Level testLevel = new Level(camera, 1, hester, hesterFall, hesterGrass, "res/backgrounds/city1.png", "res/backgrounds/city2.png", 500, 10);
+			Level level4 = new Level(camera, 35, gatsby, gatsbyFall, gatsbyRoad, "res/backgrounds/city1.png", "res/backgrounds/city2.png", 500, 10);
 			
-		//	testLevel.addObstacle(shirt, 0, 1400);
-			
-			mapCtl.addLevel(testLevel);
+			level4.addObstacle(shirt, 0, 300, 40, 40);
+			level4.addObstacle(clock, 350 - 60, 0, 60, 60);
+			level4.addObstacle(car, 350 - 40, 0, 70, 40);
+			level4.addObstacle(light, 350 - 70, 0, 50, 70);
+			level4.addObstacle(dollar, 0, 300, 70, 30);
+			mapCtl.addLevel(level4);
 		}
 	}
 
@@ -203,21 +241,61 @@ public class RunnerMain
 		}
 		else if(gradientAmt < 2)
 		{
+			if(mapCtl.getCurLevel() != 3)
+			{
+				curClip.stop();
+				curClip.close();
+			}
 			g.fillRect(0, 0, window.getWidth(), window.getHeight());
-			g.drawImage(explanations.get(mapCtl.getCurLevel()), 0, 0, null);
+			if(gameStarted)
+			{
+				g.drawImage(explanations.get(mapCtl.getCurLevel()), 0, 0, null);
+			}
+			else
+			{
+				g.drawImage(explanations.get(mapCtl.getCurLevel() + 1), 0, 0, null);
+			}
 			if(keyPressed)
 			{
+				
+				if(mapCtl.getCurLevel() == 3)
+				{
+					System.exit(0);
+				}
+				
 				keyPressed = false;
 				gradientAmt = 2;
 				if(gameStarted)
 				{
+					try
+					{
+						AudioInputStream temp = AudioSystem.getAudioInputStream(new File(BGMs.get(0)));
+						curClip.open(temp);
+						temp.close();
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
 					mapCtl.initLevel(0);
 					gameStarted = false;
 				}
 				else
 				{
+					try
+					{
+						AudioInputStream temp = AudioSystem.getAudioInputStream(new File(BGMs.get(mapCtl.getCurLevel() + 1)));
+						curClip.open(temp);
+						temp.close();
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
 					mapCtl.initLevel(mapCtl.getCurLevel() + 1);
 				}
+				curClip.loop(Clip.LOOP_CONTINUOUSLY);
+				curClip.start();
 			}
 		}
 		else if(gradientAmt < 3)
