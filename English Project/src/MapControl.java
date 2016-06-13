@@ -127,7 +127,6 @@ public class MapControl
 	private void genNewRandomSpacing()
 	{
 		nextRandomSpacing = (double)(Math.random() * spacingRange);
-		spacingRange -= spacingChallengeRate;
 		obstacleSpacing -= spacingChallengeRate;
 		if(spacingRange <= 0)
 		{

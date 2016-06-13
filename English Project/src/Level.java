@@ -30,9 +30,9 @@ public class Level
 	private ArrayList<ObstacleGenerator> obstacles;
 	private Animation runnerAnimation, groundAnimation, fallingAnimation;
 	private BackgroundManager levelBackground;
-	private double spacingChallenge, spacing;
+	private double spacingChallenge, spacing, spacingRand;
 	
-	public Level(Camera cam, int obstacles, Animation runner, Animation falling, Animation ground, String bg1, String bg2, double s, double sc)
+	public Level(Camera cam, int obstacles, Animation runner, Animation falling, Animation ground, String bg1, String bg2, double s, double sc, double sr)
 	{
 		obstaclesToOvercome = obstacles;
 		runnerAnimation = runner;
@@ -42,6 +42,7 @@ public class Level
 		levelBackground = new BackgroundManager(cam, bg1, bg2);
 		spacing = s;
 		spacingChallenge = sc;
+		spacingRand = sr;
 	}
 	
 	public int numObstacles()
@@ -79,8 +80,7 @@ public class Level
 		gameInstance.setFallingAnim(fallingAnimation);
 		gameInstance.setBackground(levelBackground);
 		gameInstance.setObstacleSpawnMode(MapControl.SPACED);
-		gameInstance.setObstacleSpacing(500, 200);
-		gameInstance.setObstacleSpacing(spacing, 50);
+		gameInstance.setObstacleSpacing(spacing, spacingRand);
 		gameInstance.setSpacingChallengeRate(spacingChallenge);
 	}
 	

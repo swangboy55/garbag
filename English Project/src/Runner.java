@@ -17,7 +17,7 @@ public class Runner extends GameObject
 		fallingAnim = falling;
 		runningAnim = running;
 		maxXVel = 1300;
-		minXVel = 100;
+		minXVel = 10;
 	}
 	
 	public void setxAccel(double accel)

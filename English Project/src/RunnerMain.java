@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.Control;
 
 public class RunnerMain 
 {
@@ -93,7 +94,7 @@ public class RunnerMain
 			scaffold.addClip("res/obstacles/scaffold.png");
 			scarlet.addClip("res/obstacles/scarlet.png");
 			
-			Level level1 = new Level(camera, 20, hester, hesterFall, hesterGrass, "res/backgrounds/scarlet1.png", "res/backgrounds/scarlet2.png", 500, 10);
+			Level level1 = new Level(camera, 20, hester, hesterFall, hesterGrass, "res/backgrounds/scarlet1.png", "res/backgrounds/scarlet2.png", 2000, 80, 100);
 
 			level1.addObstacle(pearl, 350 - 50, 1400, 50, 50);
 			level1.addObstacle(scaffold, 350 - 70, 1400, 70, 70);
@@ -123,7 +124,7 @@ public class RunnerMain
 			rag.addClip("res/obstacles/cloth.png");
 			hurricane.addClip("res/obstacles/hurricaneharbor.png");
 			
-			Level level2 = new Level(camera, 25, janie, janieFall, janieGrass, "res/backgrounds/tewwg1.png", "res/backgrounds/tewwg2.png", 500, 7);
+			Level level2 = new Level(camera, 25, janie, janieFall, janieGrass, "res/backgrounds/tewwg1.png", "res/backgrounds/tewwg2.png", 1500, 40, 100);
 			
 			level2.addObstacle(mule, 350 - 60, 0, 70, 60);
 			level2.addObstacle(rag, 0, 400, 60, 60);
@@ -154,7 +155,7 @@ public class RunnerMain
 			crown.addClip("res/obstacles/crown.png");
 			school.addClip("res/obstacles/school.png");
 			
-			Level level3 = new Level(camera, 30, huck, huckFall, huckWater, "res/backgrounds/huck1.png", "res/backgrounds/huck2.png", 500, 10);
+			Level level3 = new Level(camera, 30, huck, huckFall, huckWater, "res/backgrounds/huck1.png", "res/backgrounds/huck2.png", 1000, 20, 100);
 
 			level3.addObstacle(whiskey, 350 - 60, 0, 50, 60);
 			level3.addObstacle(crown, 350 - 32, 0, 32, 32);
@@ -188,7 +189,7 @@ public class RunnerMain
 			light.addClip("res/obstacles/light.png");
 			dollar.addClip("res/obstacles/hollahollagetdolla.png");
 			
-			Level level4 = new Level(camera, 35, gatsby, gatsbyFall, gatsbyRoad, "res/backgrounds/city1.png", "res/backgrounds/city2.png", 500, 10);
+			Level level4 = new Level(camera, 35, gatsby, gatsbyFall, gatsbyRoad, "res/backgrounds/city1.png", "res/backgrounds/city2.png", 500, 4, 100);
 			
 			level4.addObstacle(shirt, 0, 300, 40, 40);
 			level4.addObstacle(clock, 350 - 60, 0, 60, 60);
